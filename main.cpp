@@ -56,7 +56,7 @@ LinkedList CreateListFromTxt()
 	while(!feof(fp))
 	{
 		if(!strcmp(temp.student_number,"2017207324XXX"))
-			continue;
+			goto LABEL;
 		p=(struct Lnode*)malloc(sizeof(struct Lnode));
 		strcpy(p->data.student_name,temp.student_name);
 		strcpy(p->data.student_institute,temp.student_institute);
@@ -65,7 +65,8 @@ LinkedList CreateListFromTxt()
 		p->next=NULL;
 		r->next=p;
 		r=p;
-		fread(&temp,sizeof(struct Student),1,fp);
+		LABEL:
+			fread(&temp,sizeof(struct Student),1,fp);
 	}
 	puts("导入StudentData.txt数据，建立学生信息单链表成功!");
 	fclose(fp);
@@ -343,10 +344,10 @@ int main(void)
 	int key=true;
 	int function_number;//定义功能编号
 	char student_number[STUDENTNUMBER];
+	LinkedList head=NULL;
 	struct Student student;
 
 	Login();
-	LinkedList head=CreateListFromTxt();
 	while(key)
 	{
 		StudentSystemMenu();
@@ -381,6 +382,7 @@ int main(void)
 			DelectStudentInformation(student_number);
 			break;
 		case 5:
+			head=CreateListFromTxt();
 			DisplayStudentDataLinkedList(head);
 			break;
 		default:
